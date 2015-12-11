@@ -4,6 +4,7 @@ require 'active_support'
 require 'active_support/core_ext/hash'
 
 module StreamService
+  TIME_STAMP_FORMAT = '%Y-%m-%dT%H:%M:%S.%N%:z'
   class Item
     include Virtus.model
 
@@ -16,7 +17,7 @@ module StreamService
       @type      = type
       @stream_id = stream_id
       @id        = id.to_i
-      @ts        = (DateTime.parse(ts) if ts.is_a? String) || ts
+      @ts        = (DateTime.parse(ts, StreamService::TIME_STAMP_FORMAT) if ts.is_a? String) || ts
     end
 
     def self.from_post(post_id:, user_id:, timestamp: DateTime.now, is_repost: false)
@@ -32,7 +33,7 @@ module StreamService
       {
         id:        @id.to_s,
         stream_id: @stream_id,
-        ts:        @ts.iso8601,
+        ts:        @ts.strftime(StreamService::TIME_STAMP_FORMAT),
         type:      @type
       }
     end
