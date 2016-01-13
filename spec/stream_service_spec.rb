@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'json'
 
 describe StreamService do
-  let(:service) { StreamService::Service.new(ENV['STREAM_SERVICE_URL']) }
+  let(:service) { StreamService }
   let(:item1) { StreamService::Item.from_post(post_id: 12345, user_id: "abc123", timestamp: DateTime.now - 2.minutes, is_repost: true) }
   let(:item2) { StreamService::Item.from_post(post_id: 12345, user_id: "abc123", timestamp: DateTime.now, is_repost: false) }
   let!(:items) { [item1, item2] }

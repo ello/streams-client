@@ -1,8 +1,24 @@
 require 'stream_service/version'
+require 'stream_service/item'
 require 'net/http'
 require 'oj'
+require 'forwardable'
 
 module StreamService
+  extend SingleForwardable
+
+  class << self
+    def client(service_url = ENV['STREAM_SERVICE_URL'])
+      @client ||= Service.new(service_url)
+    end
+
+    def client=(client)
+      @client = client
+    end
+  end
+
+  def_delegators :client, :add_items, :get_stream, :get_coalesced_stream
+
   class Service
     def initialize(roshi_uri)
       @roshi_uri         = roshi_uri
@@ -49,6 +65,8 @@ module StreamService
       items = Oj.load(response.body).map { |item| StreamService::Item.new(**item.symbolize_keys) }
 
       { pagination_slug: new_slug(response), stream_items: items }
+    rescue StandardError => _e
+      raise "Problem parsing json, status: #{response.code}, body: #{response.body}"
     end
 
     def http_client(path:, http_verb:, body: "")
