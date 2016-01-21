@@ -74,6 +74,10 @@ module StreamService
       http    = Net::HTTP.new(uri.host, uri.port)
       request = create_request(http_verb).new(uri)
 
+      if uri.user && uri.password
+        request.basic_auth uri.user, uri.password
+      end
+
       request.body = body
       request.add_field "Content-Type", "text/json"
 
