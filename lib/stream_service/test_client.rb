@@ -18,10 +18,12 @@ class StreamService::TestClient
   end
 
   def get_stream(stream_id:, limit: 10, pagination_slug: "")
+    stream_id = StreamService.format_stream_id(stream_id)
     find_in_stream(db[stream_id], limit, pagination_slug)
   end
 
   def get_coalesced_stream(stream_ids:, limit: 10, pagination_slug: "")
+    stream_ids = stream_ids.map { |id| StreamService.format_stream_id(id) }
     find_in_stream(stream_ids.flat_map {|id| db[id] }, limit, pagination_slug)
   end
 

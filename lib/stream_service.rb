@@ -6,6 +6,8 @@ require 'forwardable'
 
 module StreamService
   extend SingleForwardable
+  STREAM_PREFIX = ENV['STREAM_SERVICE_PREFIX'] || nil
+  STREAM_ENV = ENV['RAILS_ENV'] || 'development'
 
   class << self
     def client(service_url = ENV['STREAM_SERVICE_URL'])
@@ -14,6 +16,10 @@ module StreamService
 
     def client=(client)
       @client = client
+    end
+
+    def format_stream_id(id)
+      [STREAM_ENV, STREAM_PREFIX, id].compact.join(':')
     end
   end
 
@@ -38,6 +44,8 @@ module StreamService
     end
 
     def get_stream(stream_id:, limit: 10, pagination_slug: "")
+      stream_id = StreamService.format_stream_id(stream_id)
+
       begin
         response = http_client(path: "/stream/#{stream_id}#{query_params(limit, pagination_slug)}", http_verb: 'get')
       rescue StandardError => e
@@ -48,6 +56,7 @@ module StreamService
     end
 
     def get_coalesced_stream(stream_ids:, limit: 10, pagination_slug: "")
+      stream_ids = stream_ids.map { |id| StreamService.format_stream_id(id) }
       body = { streams: stream_ids }.to_json
 
       begin

@@ -5,6 +5,7 @@ require 'active_support/core_ext/hash'
 
 module StreamService
   TIME_STAMP_FORMAT = '%Y-%m-%dT%H:%M:%S.%N%:z'
+
   class Item
     include Virtus.model
 
@@ -23,7 +24,7 @@ module StreamService
     def self.from_post(post_id:, user_id:, timestamp: DateTime.now, is_repost: false)
       self.new(
         id:        post_id,
-        stream_id: user_id,
+        stream_id: StreamService.format_stream_id(user_id),
         ts:        timestamp,
         type:      is_repost ? 1:0
       )
