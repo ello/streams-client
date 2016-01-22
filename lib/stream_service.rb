@@ -81,8 +81,8 @@ module StreamService
     def http_client(path:, http_verb:, body: "")
       uri     = URI(@roshi_uri + "#{path}")
       http    = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = (uri.scheme == 'https')
       request = create_request(http_verb).new(uri)
-
       if uri.user && uri.password
         request.basic_auth uri.user, uri.password
       end
