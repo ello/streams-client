@@ -17,6 +17,12 @@ class StreamService::TestClient
     end
   end
 
+  def remove_items(items)
+    items.each do |item|
+      db[item.stream_id].delete(item)
+    end
+  end
+
   def get_stream(stream_id:, limit: 10, pagination_slug: "")
     stream_id = StreamService.format_stream_id(stream_id)
     find_in_stream(db[stream_id], limit, pagination_slug)

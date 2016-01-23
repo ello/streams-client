@@ -23,7 +23,7 @@ module StreamService
     end
   end
 
-  def_delegators :client, :add_items, :get_stream, :get_coalesced_stream
+  def_delegators :client, :add_items, :remove_items, :get_stream, :get_coalesced_stream
 
   class Service
     def initialize(roshi_uri)
@@ -36,6 +36,18 @@ module StreamService
 
       begin
         response = http_client(path: "/streams", http_verb: 'put', body: body)
+      rescue StandardError => e
+        puts "HTTP Request failed (#{e.message})"
+      end
+
+      response
+    end
+
+    def remove_items(items)
+      body = Oj.dump(items)
+
+      begin
+        response = http_client(path: "/streams", http_verb: 'delete', body: body)
       rescue StandardError => e
         puts "HTTP Request failed (#{e.message})"
       end
@@ -101,6 +113,8 @@ module StreamService
           Net::HTTP::Put
         when 'post'
           Net::HTTP::Post
+        when 'delete'
+          Net::HTTP::Delete
       end
     end
 
