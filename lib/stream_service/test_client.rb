@@ -1,4 +1,5 @@
 require 'stream_service'
+require 'stream_service/stream_response'
 
 class StreamService::TestClient
   class << self
@@ -15,12 +16,16 @@ class StreamService::TestClient
     items.each do |item|
       db[item.stream_id] = db[item.stream_id] << item
     end
+
+    StreamService::StreamResponse.new(response: Net::HTTPCreated)
   end
 
   def remove_items(items)
     items.each do |item|
       db[item.stream_id].delete_if {|i| i.id == item.id }
     end
+
+    StreamService::StreamResponse.new(response: Net::HTTPSuccess)
   end
 
   def get_stream(stream_id:, limit: 10, pagination_slug: "")
@@ -46,7 +51,7 @@ class StreamService::TestClient
 
     results = sorted.slice(start.to_i, limit.to_i)
 
-    { pagination_slug: new_slug(results.last), stream_items: results }
+    StreamService::StreamResponse.new(items: results, pagination_slug: new_slug(results.last))
   end
 
   # fake pagination slug follows real tsAitem format, but just uses unique post

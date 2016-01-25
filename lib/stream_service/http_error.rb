@@ -1,0 +1,2 @@
+class HttpError < StandardError
+end

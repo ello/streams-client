@@ -1,5 +1,5 @@
 require 'stream_service/version'
-require 'stream_service/item'
+require 'stream_service/stream_response'
 require 'net/http'
 require 'oj'
 require 'forwardable'
@@ -11,7 +11,7 @@ module StreamService
 
   class << self
     def client(service_url = ENV['STREAM_SERVICE_URL'])
-      @client ||= Service.new(service_url)
+      @client ||= Client.new(service_url)
     end
 
     def client=(client)
@@ -25,7 +25,7 @@ module StreamService
 
   def_delegators :client, :add_items, :remove_items, :get_stream, :get_coalesced_stream
 
-  class Service
+  class Client
     def initialize(roshi_uri)
       @roshi_uri         = roshi_uri
       Oj.default_options = { :mode => :compat }
@@ -34,61 +34,29 @@ module StreamService
     def add_items(items)
       body = Oj.dump(items)
 
-      begin
-        response = http_client(path: "/streams", http_verb: 'put', body: body)
-      rescue StandardError => e
-        puts "HTTP Request failed (#{e.message})"
-      end
-
-      response
+      http_client(path: "/streams", http_verb: 'put', body: body)
     end
 
     def remove_items(items)
       body = Oj.dump(items)
 
-      begin
-        response = http_client(path: "/streams", http_verb: 'delete', body: body)
-      rescue StandardError => e
-        puts "HTTP Request failed (#{e.message})"
-      end
-
-      response
+      http_client(path: "/streams", http_verb: 'delete', body: body)
     end
 
     def get_stream(stream_id:, limit: 10, pagination_slug: "")
       stream_id = StreamService.format_stream_id(stream_id)
 
-      begin
-        response = http_client(path: "/stream/#{stream_id}#{query_params(limit, pagination_slug)}", http_verb: 'get')
-      rescue StandardError => e
-        puts "HTTP Request failed (#{e.message})"
-      end
-
-      return_items(response)
+      http_client(path: "/stream/#{stream_id}#{query_params(limit, pagination_slug)}", http_verb: 'get')
     end
 
     def get_coalesced_stream(stream_ids:, limit: 10, pagination_slug: "")
       stream_ids = stream_ids.map { |id| StreamService.format_stream_id(id) }
       body = { streams: stream_ids }.to_json
 
-      begin
-        response = http_client(path: "/streams/coalesce#{query_params(limit, pagination_slug)}", http_verb: 'post', body: body)
-      rescue StandardError => e
-        puts "HTTP Request failed (#{e.message})"
-      end
-
-      return_items(response)
+      http_client(path: "/streams/coalesce#{query_params(limit, pagination_slug)}", http_verb: 'post', body: body)
     end
 
     private
-
-    def return_items(response)
-      items = Oj.load(response.body).map { |item| StreamService::Item.new(**item.symbolize_keys) }
-
-      { pagination_slug: new_slug(response), stream_items: items }
-    rescue StandardError => _e
-      raise "Problem parsing json, status: #{response.code}, body: #{response.body}"
-    end
 
     def http_client(path:, http_verb:, body: "")
       uri     = URI(@roshi_uri + "#{path}")
@@ -102,7 +70,8 @@ module StreamService
       request.body = body
       request.add_field "Content-Type", "text/json"
 
-      http.request(request)
+      response = StreamService::StreamResponse.new(response: http.request(request))
+      response.raise_if_invalid!
     end
 
     def create_request(verb)
@@ -116,10 +85,6 @@ module StreamService
         when 'delete'
           Net::HTTP::Delete
       end
-    end
-
-    def new_slug(response)
-      response.header["link"][/from=(.*?)>;/, 1] || ""
     end
 
     def query_params(limit, pagination_slug)
