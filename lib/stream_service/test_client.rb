@@ -19,7 +19,7 @@ class StreamService::TestClient
 
   def remove_items(items)
     items.each do |item|
-      db[item.stream_id].delete(item)
+      db[item.stream_id].delete_if {|i| i.id == item.id }
     end
   end
 
