@@ -1,0 +1,2 @@
+class JsonError < StandardError
+end

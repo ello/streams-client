@@ -26,9 +26,9 @@ module StreamService
   def_delegators :client, :add_items, :remove_items, :get_stream, :get_coalesced_stream
 
   class Client
-    def initialize(roshi_uri)
-      @roshi_uri         = roshi_uri
-      Oj.default_options = { :mode => :compat }
+    def initialize(service_uri)
+      @service_uri       = service_uri
+      Oj.default_options = { mode: :compat }
     end
 
     def add_items(items)
@@ -59,7 +59,7 @@ module StreamService
     private
 
     def http_client(path:, http_verb:, body: "")
-      uri     = URI(@roshi_uri + "#{path}")
+      uri     = URI(@service_uri + "#{path}")
       http    = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = (uri.scheme == 'https')
       request = create_request(http_verb).new(uri)

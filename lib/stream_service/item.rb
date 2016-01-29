@@ -1,4 +1,3 @@
-require 'virtus'
 require 'digest/sha1'
 require 'active_support'
 require 'active_support/core_ext/hash'
@@ -7,12 +6,8 @@ module StreamService
   TIME_STAMP_FORMAT = '%Y-%m-%dT%H:%M:%S.%N%:z'
 
   class Item
-    include Virtus.model
 
-    attribute :id, String #post id
-    attribute :stream_id, String #user id
-    attribute :ts, DateTime, :default => DateTime.now #ts of the post
-    attribute :type, Integer, :default => 0 # 0 for post, 1 for repost
+    attr_reader :id, :stream_id, :ts, :type
 
     def initialize(id:, stream_id:, ts:, type:)
       @type      = type
