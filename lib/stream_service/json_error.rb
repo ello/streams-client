@@ -1,2 +1,2 @@
-class JsonError < StandardError
+class StreamService::JsonError < StandardError
 end

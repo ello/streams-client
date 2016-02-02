@@ -1,2 +1,2 @@
-class HttpError < StandardError
+class StreamService::HttpError < StandardError
 end
