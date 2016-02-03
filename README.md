@@ -1,7 +1,9 @@
-# Ello Stream Service Ruby Gem
+<img src="http://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/641/large_Ello.1000x1000.png" width="200px" height="200px" />
 
-This gem provides a ruby API to the Roshi backed [ello-streams](ello/streams)
-service.
+# Stream Service Ruby Gem
+
+This gem provides a ruby API to the Roshi backed 
+[ello/streams](https://github.com/ello/streams) service.
 
 [![Build Status](https://travis-ci.org/ello/streams-client.svg?branch=master)](https://travis-ci.org/ello/streams-client)
 
@@ -10,16 +12,13 @@ service.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'stream_service'
+gem 'stream_service', github: 'ello/streams-client'
 ```
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install stream_service
 
 ## Usage
 
