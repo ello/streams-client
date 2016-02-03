@@ -19,7 +19,7 @@ describe StreamService do
 
     expect(response.stream_items.length).to eq 2
     expect(response.stream_items.first.id).to eq 12345
-    expect(response.stream_items.first.stream_id).to eq "development:abc123"
+    expect(response.stream_items.first.stream_id).to eq "test:abc123"
     expect(response.stream_items.first.type).to eq 0
     expect(response.stream_items[1].type).to eq 1
   end
@@ -37,14 +37,14 @@ describe StreamService do
     expect(response1.stream_items.length).to eq 2
     expect(response1.stream_items.first.id).to eq 12345
     expect(response1.stream_items[1].id).to eq 12345
-    expect(response1.stream_items.first.stream_id).to eq "development:abc123"
+    expect(response1.stream_items.first.stream_id).to eq "test:abc123"
     expect(response1.stream_items.first.type).to eq 0
 
     response2 = service.get_coalesced_stream(stream_ids: user_ids, limit: 3, pagination_slug: response1.pagination_slug)
 
     expect(response2.stream_items.length).to eq 3
     expect(response2.stream_items.first.id).to eq 44
-    expect(response2.stream_items.first.stream_id).to eq "development:malory"
+    expect(response2.stream_items.first.stream_id).to eq "test:malory"
     expect(response2.stream_items[1].id).to eq 22
     expect(response2.stream_items[2].id).to eq 55
 
@@ -64,19 +64,19 @@ describe StreamService do
 
     expect(response.stream_items.length).to eq 2
     expect(response.stream_items.first.id).to eq 12345
-    expect(response.stream_items.first.stream_id).to eq "development:abc123"
+    expect(response.stream_items.first.stream_id).to eq "test:abc123"
     expect(response.stream_items.first.type).to eq 0
-    expect(response.stream_items.any? { |item| item.stream_id == "development:asdf" }).to be false
-    expect(response.stream_items.any? { |item| item.stream_id == "development:pizza" }).to be false
+    expect(response.stream_items.any? { |item| item.stream_id == "test:asdf" }).to be false
+    expect(response.stream_items.any? { |item| item.stream_id == "test:pizza" }).to be false
 
     next_response = service.get_coalesced_stream(stream_ids: user_ids, limit: 2, pagination_slug: response.pagination_slug)
 
     expect(next_response.stream_items.length).to eq 1
     expect(next_response.stream_items.first.id).to eq 44
-    expect(next_response.stream_items.first.stream_id).to eq "development:asdf"
+    expect(next_response.stream_items.first.stream_id).to eq "test:asdf"
     expect(next_response.stream_items.first.ts.mday).to eq t.mday
     expect(next_response.stream_items.first.type).to eq 0
-    expect(next_response.stream_items.any? { |item| item.stream_id == "development:abc123" }).to be false
-    expect(next_response.stream_items.any? { |item| item.stream_id == "development:pizza" }).to be false
+    expect(next_response.stream_items.any? { |item| item.stream_id == "test:abc123" }).to be false
+    expect(next_response.stream_items.any? { |item| item.stream_id == "test:pizza" }).to be false
   end
 end
