@@ -3,6 +3,8 @@
 This gem provides a ruby API to the Roshi backed [ello-streams](ello/streams)
 service.
 
+[![Build Status](https://travis-ci.org/ello/streams-client.svg?branch=master)](https://travis-ci.org/ello/streams-client)
+
 ## Installation
 
 Add this line to your application's Gemfile:

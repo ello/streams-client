@@ -1,4 +1,10 @@
 language: ruby
 rvm:
   - 2.2.2
-before_install: gem install bundler -v 1.10.6
+before_install: 
+  - gem install bundler -v 1.10.6
+  - docker-compose up -d
+services:
+  - docker
+env:
+  - STREAM_SERVICE_URL=http://localhost:8080
