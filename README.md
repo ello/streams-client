@@ -1,23 +1,24 @@
-# Ello Stream Service Ruby Gem
+<img src="http://d324imu86q1bqn.cloudfront.net/uploads/user/avatar/641/large_Ello.1000x1000.png" width="200px" height="200px" />
 
-This gem provides a ruby API to the Roshi backed [ello-streams](ello/streams)
-service.
+# Stream Service Ruby Gem
+
+This gem provides a ruby API to the Roshi backed 
+[ello/streams](https://github.com/ello/streams) service.
+
+[![Build Status](https://travis-ci.org/ello/streams-client.svg?branch=master)](https://travis-ci.org/ello/streams-client)
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'stream_service'
+gem 'stream_service', github: 'ello/streams-client'
 ```
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install stream_service
 
 ## Usage
 
@@ -103,3 +104,8 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/ello/stream_service.
 
+## License
+Streams is released under the [MIT License](blob/master/LICENSE.txt)
+
+## Code of Conduct
+Ello was created by idealists who believe that the essential nature of all human beings is to be kind, considerate, helpful, intelligent, responsible, and respectful of others. To that end, we will be enforcing [the Ello rules](https://ello.co/wtf/policies/rules/) within all of our open source projects. If you don’t follow the rules, you risk being ignored, banned, or reported for abuse.
