@@ -6,10 +6,11 @@ class StreamService::StreamResponse
 
   attr_reader :response
 
-  def initialize(response: nil, items: nil, pagination_slug: nil)
+  def initialize(response: nil, items: nil, pagination_slug: nil, body: nil)
     @response = response
     @items = items
     @pagination_slug = pagination_slug
+    @body = body
   end
 
   def code
@@ -21,9 +22,9 @@ class StreamService::StreamResponse
     when Net::HTTPSuccess, Net::HTTPFound, Net::HTTPCreated
       self
     when Net::HTTPUnprocessableEntity
-      fail StreamService::HttpError, "Invalid Stream Server request (422): #{response.body}"
+      fail StreamService::HttpError, "Invalid Stream Server request (422). Request: #{@body}, Response: #{response.body}"
     when Net::HTTPBadRequest
-      fail StreamService::HttpError, "Stream Server encountered error (400): #{response.body}"
+      fail StreamService::HttpError, "Stream Server encountered error (400). Request: #{@body}, Response: #{response.body}"
     else
       fail StreamService::HttpError, "Error accessing Stream Server (#{response.code}): #{response.body}"
     end

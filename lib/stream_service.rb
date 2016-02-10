@@ -70,7 +70,7 @@ module StreamService
       request.body = body
       request.add_field "Content-Type", "text/json"
 
-      response = StreamService::StreamResponse.new(response: http.request(request))
+      response = StreamService::StreamResponse.new(response: http.request(request), body: body)
       response.raise_if_invalid!
     end
 
