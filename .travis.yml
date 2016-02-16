@@ -1,10 +1,14 @@
 language: ruby
 rvm:
-  - 2.2.2
-before_install: 
-  - gem install bundler -v 1.10.6
-  - docker-compose up -d
+- 2.2.2
+before_install:
+- gem install bundler -v 1.10.6
+- docker-compose up -d
 services:
-  - docker
+- docker
 env:
-  - STREAM_SERVICE_URL=http://localhost:8080
+- STREAM_SERVICE_URL=http://localhost:8080
+notifications:
+  slack:
+    rooms:
+      secure: lcwPmw9pcHn2kGSFr8DoN5F35MfK80sjBwy+vzQ2QguvfG3QDIvB8mNIoFPGtI+Xl8LwUvS+9sSUxxM2pdQxXVeYTnY1gRtglhO4EzispfKNL6KuWZZBmq05QDl2doXvKd9cfpBUd3KTM/gVproTkm95WiL0iO+zdrA+/OgTPm9M58aqYmJadyfIm8wHLY2h9muhhzFX6ikCZQNR+SSd+uHH4nEfw1FXiuYvaJHMfl21xWHI16MSGuQsT2AmthRU+GrDKCyRWeqMDdkRhHslxvQ4gn4o7YoRUyhJk2hR9gpIYLLdS5CO4Lx/9ybpV+c3mrFO4e5CFvDUK8qgc1rPVSHf0PvAawTlTspBb6W2t8cFdX6WlqzilxBcdEYn8bWMMZM/9siNkgjup94BPLWW6qfiJwJr+llkGnUsPo0HAsveynpcLdYAdigJ9xaUf+ZWzcRt3dActY15l5vQ01Rwg6OGxr0Op75bNAo72ayt24rhqfPTNuySv+4PpFgFwEE0wSzBbz5qJ6x/TbomTVdigxhrqkt6Q5dzztkWhDM8ZEBnLgr3ihcbRTorP/M8lOaGDyg6Ltcj/7s3m7lleXYM9TV52g33GNhObINYD93MANQyQJcJPfeYoDrmoFds4pwmimskiQZDqDnyXUxE2lgebQc8x4wdMrmDoqKJH9C7p2U=
