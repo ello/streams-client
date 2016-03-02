@@ -51,7 +51,13 @@ class StreamService::TestClient
 
     results = sorted.slice(start.to_i, limit.to_i)
 
-    StreamService::StreamResponse.new(items: results, pagination_slug: new_slug(results.last))
+    new_slug = new_slug(results.last)
+
+    if new_slug == slug
+      new_slug = ""
+    end
+
+    StreamService::StreamResponse.new(items: results, pagination_slug: new_slug)
   end
 
   # fake pagination slug follows real tsAitem format, but just uses unique post

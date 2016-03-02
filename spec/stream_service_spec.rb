@@ -52,6 +52,10 @@ describe StreamService do
 
     expect(response3.stream_items.length).to eq 1
     expect(response3.stream_items.first.id).to eq 66
+
+    response4 = service.get_coalesced_stream(stream_ids: user_ids, pagination_slug: response3.pagination_slug)
+
+    expect(response4.stream_items.length).to eq 0
   end
 
   it 'can grab content from multiple users with a limit and pagination slug' do
