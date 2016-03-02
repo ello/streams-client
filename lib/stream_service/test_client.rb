@@ -55,6 +55,7 @@ class StreamService::TestClient
 
     if new_slug == slug
       new_slug = ""
+      results = []
     end
 
     StreamService::StreamResponse.new(items: results, pagination_slug: new_slug)
