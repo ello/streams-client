@@ -95,4 +95,16 @@ describe StreamService do
     expect(next_response.stream_items.any? { |item| item.stream_id == "test:abc123" }).to be false
     expect(next_response.stream_items.any? { |item| item.stream_id == "test:pizza" }).to be false
   end
+
+  it 'can add, remove, and readd stuff' do
+    service.add_items(items)
+    response = service.get_stream(stream_id: 'abc123')
+    expect(response.stream_items.length).to eq 2
+    service.remove_items(items)
+    response = service.get_stream(stream_id: 'abc123')
+    expect(response.stream_items.length).to eq 0
+    service.add_items(items)
+    response = service.get_stream(stream_id: 'abc123')
+    expect(response.stream_items.length).to eq 2
+  end
 end
