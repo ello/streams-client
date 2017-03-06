@@ -4,16 +4,17 @@ redis:
     - "6379:6379"
 
 roshi:
-  image: "500px/roshi:latest"
+  image: "ello/roshi-server:latest"
   links:
     - redis
   command: "-redis.instances=redis:6379"
 
 streams:
-  image: "ello/streams"
+  image: "ello/streams:latest"
   links:
     - roshi
   environment:
+    LOG_LEVEL: "debug"
     PORT: "8080"
     ROSHI_URL: "http://roshi:6302"
   ports: 

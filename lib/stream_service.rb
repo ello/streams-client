@@ -28,17 +28,16 @@ module StreamService
   class Client
     def initialize(service_uri)
       @service_uri       = service_uri
-      Oj.default_options = { mode: :compat }
     end
 
     def add_items(items)
-      body = Oj.dump(items)
+      body = Oj.dump(items, mode: :compat, use_as_json: true)
 
       http_client(path: "/streams", http_verb: 'put', body: body)
     end
 
     def remove_items(items)
-      body = Oj.dump(items)
+      body = Oj.dump(items, mode: :compat, use_as_json: true)
 
       http_client(path: "/streams", http_verb: 'delete', body: body)
     end
@@ -51,7 +50,7 @@ module StreamService
 
     def get_coalesced_stream(stream_ids:, limit: 10, pagination_slug: "")
       stream_ids = stream_ids.map { |id| StreamService.format_stream_id(id) }
-      body = { streams: stream_ids }.to_json
+      body = Oj.dump({ streams: stream_ids }, mode: :compat)
 
       http_client(path: "/streams/coalesce#{query_params(limit, pagination_slug)}", http_verb: 'post', body: body)
     end
