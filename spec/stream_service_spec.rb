@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'json'
 
 describe StreamService do
   let(:service) { StreamService }

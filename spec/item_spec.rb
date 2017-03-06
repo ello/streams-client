@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'oj'
 
 describe StreamService::Item do
   it 'matches the expectations of our universe' do
@@ -25,8 +24,6 @@ describe StreamService::Item do
     json_val = '[{"id":"10","stream_id":"5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8","ts":"2015-12-01 15:17:21 -0700","type":0},
             {"id":"0","stream_id":"5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8","ts":"2015-12-08 15:17:21 -0700","type":0}]'
 
-    Oj.default_options = {:mode => :compat }
-
     items = Oj.load(json_val).map do |item|
       StreamService::Item.new(**item.symbolize_keys)
     end
@@ -41,8 +38,7 @@ describe StreamService::Item do
     items = Array.new
     items << StreamService::Item.from_post(post_id: 12345, user_id: "abc123", timestamp: Time.now, is_repost: true)
     items << StreamService::Item.from_post(post_id: 12345, user_id: "abc123", timestamp: Time.now, is_repost: false)
-    Oj.default_options = {:mode => :compat }
-    json = Oj.dump(items)
+    json = Oj.dump(items, mode: :compat)
     puts "items #{json}"
   end
 end

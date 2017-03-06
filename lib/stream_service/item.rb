@@ -10,10 +10,10 @@ module StreamService
     attr_reader :id, :stream_id, :ts, :type
 
     def initialize(id:, stream_id:, ts:, type:)
-      @type      = type
-      @stream_id = stream_id
       @id        = id.to_i
+      @stream_id = stream_id
       @ts        = (DateTime.parse(ts, StreamService::TIME_STAMP_FORMAT) if ts.is_a? String) || ts
+      @type      = type
     end
 
     def self.from_post(post_id:, user_id:, timestamp: DateTime.now, is_repost: false)
@@ -25,7 +25,7 @@ module StreamService
       )
     end
 
-    def to_hash
+    def as_json
       {
         id:        @id.to_s,
         stream_id: @stream_id,
