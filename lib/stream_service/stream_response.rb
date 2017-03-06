@@ -22,11 +22,18 @@ class StreamService::StreamResponse
     when Net::HTTPSuccess, Net::HTTPFound, Net::HTTPCreated
       self
     when Net::HTTPUnprocessableEntity
-      fail StreamService::HttpError, "Invalid Stream Server request (422). Request: #{@body}, Response: #{response.body}"
+      fail StreamService::HttpError,
+           [ 'Invalid Stream Server request (422)',
+             "Response: #{response.body},",
+             "Request: #{@body}" ].join(' ')
     when Net::HTTPBadRequest
-      fail StreamService::HttpError, "Stream Server encountered error (400). Request: #{@body}, Response: #{response.body}"
+      fail StreamService::HttpError,
+           [ 'Stream Server encountered error (400).',
+             "Response: #{response.body},",
+             "Request: #{@body}" ].join(' ')
     else
-      fail StreamService::HttpError, "Error accessing Stream Server (#{response.code}): #{response.body}"
+      fail StreamService::HttpError,
+        "Error accessing Stream Server (#{response.code}): #{response.body}"
     end
   end
 
