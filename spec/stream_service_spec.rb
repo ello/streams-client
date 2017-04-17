@@ -35,24 +35,6 @@ describe StreamService do
     expect(response.stream_items.length).to eq 0
   end
 
-  it 'can re-add removed items to a stream' do
-    service.add_items(items)
-    response = service.get_stream(stream_id: "abc123")
-
-    expect(response.stream_items.length).to eq 2
-
-    service.remove_items(items)
-    response = service.get_stream(stream_id: "abc123")
-
-    expect(response.stream_items.length).to eq 0
-
-    service.add_items(items)
-    response = service.get_stream(stream_id: "abc123")
-
-    expect(response.stream_items.length).to eq 2
-  end
-
-
   it 'can grab content from multiple users' do
     items << StreamService::Item.from_post(post_id: 22, user_id: "archer", timestamp: DateTime.now - 30.minutes, is_repost: false)
     items << StreamService::Item.from_post(post_id: 33, user_id: "cyril", timestamp: DateTime.now - 29.minutes, is_repost: false)
