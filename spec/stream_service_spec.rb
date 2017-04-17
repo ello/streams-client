@@ -6,13 +6,13 @@ describe StreamService do
   let(:item2) { StreamService::Item.from_post(post_id: 12345, user_id: "abc123", timestamp: DateTime.now, is_repost: false) }
   let!(:items) { [item1, item2] }
 
-  it 'can send stuff!' do
+  it 'can send items into a stream' do
     response = service.add_items(items)
 
     expect(response.code).to eq "201"
   end
 
-  it 'can get stuff!' do
+  it 'can get items back from a stream' do
     service.add_items(items)
     response = service.get_stream(stream_id: "abc123")
 
@@ -22,6 +22,36 @@ describe StreamService do
     expect(response.stream_items.first.type).to eq 0
     expect(response.stream_items[1].type).to eq 1
   end
+
+  it 'can remove items from a stream' do
+    service.add_items(items)
+    response = service.get_stream(stream_id: "abc123")
+
+    expect(response.stream_items.length).to eq 2
+
+    service.remove_items(items)
+    response = service.get_stream(stream_id: "abc123")
+
+    expect(response.stream_items.length).to eq 0
+  end
+
+  it 'can re-add removed items to a stream' do
+    service.add_items(items)
+    response = service.get_stream(stream_id: "abc123")
+
+    expect(response.stream_items.length).to eq 2
+
+    service.remove_items(items)
+    response = service.get_stream(stream_id: "abc123")
+
+    expect(response.stream_items.length).to eq 0
+
+    service.add_items(items)
+    response = service.get_stream(stream_id: "abc123")
+
+    expect(response.stream_items.length).to eq 2
+  end
+
 
   it 'can grab content from multiple users' do
     items << StreamService::Item.from_post(post_id: 22, user_id: "archer", timestamp: DateTime.now - 30.minutes, is_repost: false)
