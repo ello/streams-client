@@ -3,7 +3,7 @@ require 'active_support'
 require 'active_support/core_ext/hash'
 
 module StreamService
-  TIME_STAMP_FORMAT = '%Y-%m-%dT%H:%M:%S.%N%:z'
+  TIME_STAMP_FORMAT = '%Y-%m-%dT%H:%M:%S.%6N%:z'
 
   class Item
 
