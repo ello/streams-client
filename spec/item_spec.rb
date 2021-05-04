@@ -1,4 +1,6 @@
 require 'spec_helper'
+require 'json'
+require 'active_support/time'
 
 describe StreamService::Item do
   it 'matches the expectations of our universe' do
@@ -16,7 +18,6 @@ describe StreamService::Item do
 
     # expect(item.stream_id.length).to eq(40) # should be hashed
     # expect(item.stream_id).to eq(Digest::SHA1.hexdigest "abc123") # should be hashed
-
     expect(item.ts).to eq(t.iso8601)
   end
 
@@ -34,11 +35,12 @@ describe StreamService::Item do
     expect(items[0].id).to eq(10)
   end
 
-  it 'can marshall an array of items to json' do
+  it 'can marshall an array of items to JSON' do
     items = Array.new
     items << StreamService::Item.from_post(post_id: 12345, user_id: "abc123", timestamp: Time.now, is_repost: true)
     items << StreamService::Item.from_post(post_id: 12345, user_id: "abc123", timestamp: Time.now, is_repost: false)
     json = Oj.dump(items, mode: :compat)
-    puts "items #{json}"
+
+    expect { JSON.parse(json) }.not_to raise_error
   end
 end
