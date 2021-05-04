@@ -2,7 +2,7 @@
 
 # Stream Service Ruby Gem
 
-[![Build Status](https://travis-ci.org/ello/streams-client.svg?branch=master)](https://travis-ci.org/ello/streams-client)
+[![Build Status](https://travis-ci.com/ello/streams-client.svg?branch=main)](https://travis-ci.com/ello/streams-client)
 
 This gem provides a Ruby API to the Roshi backed
 [ello/streams](https://github.com/ello/streams) service.
@@ -107,7 +107,7 @@ https://github.com/ello/stream_service.
 
 ## License
 
-Streams is released under the [MIT License](blob/master/LICENSE.txt)
+Streams is released under the [MIT License](blob/main/LICENSE.txt)
 
 ## Code of Conduct
 
