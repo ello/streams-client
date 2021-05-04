@@ -17,5 +17,5 @@ streams:
     LOG_LEVEL: "debug"
     PORT: "8080"
     ROSHI_URL: "http://roshi:6302"
-  ports: 
+  ports:
     - "8080:8080"
