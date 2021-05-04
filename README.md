@@ -2,14 +2,14 @@
 
 # Stream Service Ruby Gem
 
-This gem provides a ruby API to the Roshi backed 
-[ello/streams](https://github.com/ello/streams) service.
-
 [![Build Status](https://travis-ci.org/ello/streams-client.svg?branch=master)](https://travis-ci.org/ello/streams-client)
+
+This gem provides a Ruby API to the Roshi backed
+[ello/streams](https://github.com/ello/streams) service.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your application’s Gemfile:
 
 ```ruby
 gem 'stream_service', github: 'ello/streams-client'
@@ -17,15 +17,15 @@ gem 'stream_service', github: 'ello/streams-client'
 
 And then execute:
 
-    $ bundle
-
+```shell
+$ bundle
+```
 
 ## Usage
 
 Add stream items to a stream:
 
 ```ruby
-
   item1 = StreamService::Item.from_post(
     post_id: 12345,
     user_id: "abc123",
@@ -41,13 +41,11 @@ Add stream items to a stream:
   )
 
   StreamService.add_items([item1, item2])
-
 ```
 
 Retreive from stream:
 
 ```ruby
-
   response = StreamService.get_stream(stream_id: "abc123")
   assert response.stream_items.includes?(item1)
   assert !response.stream_items.includes?(item2)
@@ -55,13 +53,11 @@ Retreive from stream:
   response = StreamService.get_coalesced_stream(stream_ids: ["abc123", "def456"])
   assert response.stream_items.includes?(item1)
   assert response.stream_items.includes?(item2)
-
 ```
 
 Pagination, both `get_stream` and `get_coalesced_stream` behave the same:
 
 ```ruby
-
   10.times.do |i|
     StreamService::Item.from_post(
       post_id: i,
@@ -80,32 +76,44 @@ Pagination, both `get_stream` and `get_coalesced_stream` behave the same:
   assert response.stream_items.map(&:post_id) == [3, 4]
 ```
 
-
 ## Development
 
 After checking out the repo, run:
 
-* Install docker & docker-compose.
-* `bin/setup` to install dependencies. 
-* Start the streams service: `docker-compose up -d`
+- Install docker & docker-compose.
+- `bin/setup` to install dependencies.
+- Start the streams service: `docker-compose up -d`
 
-Running tests requires setting the STREAM_SERVICE_URL env variable, this will
-be the full url (with protocol) of your local docker host. Eg:
+Running tests requires setting the `STREAM_SERVICE_URL` env variable, this will
+be the full url (with protocol) of your local Docker host. Eg:
 
-`export STREAM_SERVICE_URL=http://shared.local:8080`
+`export STREAM_SERVICE_URL=http://docker-machine-ip:8080`
 
-Then, run `rake spec` to run the tests. 
+Then, run `rake spec` to run the tests.
 
-You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+You can also run `bin/console` for an interactive prompt that will allow you to
+experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`. To
+release a new version, update the version number in `version.rb`, and then run
+`bundle exec rake release`, which will create a git tag for the version, push
+Git commits and tags, and push the `.gem` file to
+[rubygems.org](https://rubygems.org).
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/ello/stream_service.
+Bug reports and pull requests are welcome on GitHub at
+https://github.com/ello/stream_service.
 
 ## License
+
 Streams is released under the [MIT License](blob/master/LICENSE.txt)
 
 ## Code of Conduct
-Ello was created by idealists who believe that the essential nature of all human beings is to be kind, considerate, helpful, intelligent, responsible, and respectful of others. To that end, we will be enforcing [the Ello rules](https://ello.co/wtf/policies/rules/) within all of our open source projects. If you don’t follow the rules, you risk being ignored, banned, or reported for abuse.
+
+Ello was created by idealists who believe that the essential nature of all human
+beings is to be kind, considerate, helpful, intelligent, responsible, and
+respectful of others. To that end, we will be enforcing
+[the Ello rules](https://ello.co/wtf/policies/rules/) within all of our open
+source projects. If you don’t follow the rules, you risk being ignored, banned,
+or reported for abuse.
