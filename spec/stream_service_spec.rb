@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'active_support/time'
 
 describe StreamService do
   let(:service) { StreamService }
